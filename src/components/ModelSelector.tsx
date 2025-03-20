@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 // 模型数据
@@ -59,144 +58,46 @@ type ModelSelectorProps = {
 
 function ModelSelector({ open, onClose }: ModelSelectorProps) {
   const [selectedModel, setSelectedModel] = useState("claude37sonnet");
-  const [username, setUsername] = useState("");
-  const [cardNumber, setCardNumber] = useState("");
-  const [expiry, setExpiry] = useState("");
-  const [cvc, setCvc] = useState("");
-  const [step, setStep] = useState(1);
-  const [useDevAccount, setUseDevAccount] = useState(false);
-
+  
   const handleClose = () => {
     onClose();
   };
 
   const handleModelSelect = () => {
-    setStep(2);
-  };
-
-  const handlePaymentSubmit = () => {
-    if (useDevAccount) {
-      onClose(selectedModel, username || "测试用户");
-    } else if (cardNumber && expiry && cvc) {
-      onClose(selectedModel, username || "匿名用户");
-    }
+    // 直接提交选择的模型，使用默认用户名
+    onClose(selectedModel, "测试用户");
   };
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && handleClose()}>
       <DialogContent className="max-w-md">
-        {step === 1 && (
-          <>
-            <DialogHeader>
-              <DialogTitle className="text-xl">选择AI模型</DialogTitle>
-              <DialogDescription className="pt-2">
-                选择您想要使用的AI模型。不同模型有不同的特点和定价。
-              </DialogDescription>
-            </DialogHeader>
-            
-            <div className="py-4">
-              <RadioGroup value={selectedModel} onValueChange={setSelectedModel}>
-                {models.map(model => (
-                  <div key={model.id} className="flex items-start space-x-2 mb-4">
-                    <RadioGroupItem value={model.id} id={model.id} className="mt-1" />
-                    <div className="grid gap-1.5 w-full">
-                      <Label htmlFor={model.id} className="font-medium flex justify-between">
-                        <span>{model.name}</span>
-                        <span className="text-green-600 font-bold">${model.inputPrice}-${model.outputPrice}/百万token</span>
-                      </Label>
-                      <p className="text-sm text-muted-foreground">{model.description}</p>
-                    </div>
-                  </div>
-                ))}
-              </RadioGroup>
-            </div>
-            
-            <DialogFooter>
-              <Button onClick={handleModelSelect}>下一步</Button>
-            </DialogFooter>
-          </>
-        )}
+        <DialogHeader>
+          <DialogTitle className="text-xl">选择AI模型</DialogTitle>
+          <DialogDescription className="pt-2">
+            选择您想要使用的AI模型。不同模型有不同的特点和定价。
+          </DialogDescription>
+        </DialogHeader>
         
-        {step === 2 && (
-          <>
-            <DialogHeader>
-              <DialogTitle className="text-xl">支付与账号信息</DialogTitle>
-              <DialogDescription className="pt-2">
-                请提供您的支付信息以使用所选模型。
-              </DialogDescription>
-            </DialogHeader>
-            
-            <div className="py-4 space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="username">用户名（可选）</Label>
-                <Input 
-                  id="username" 
-                  value={username} 
-                  onChange={(e) => setUsername(e.target.value)} 
-                  placeholder="您的显示名称"
-                />
+        <div className="py-4">
+          <RadioGroup value={selectedModel} onValueChange={setSelectedModel}>
+            {models.map(model => (
+              <div key={model.id} className="flex items-start space-x-2 mb-4">
+                <RadioGroupItem value={model.id} id={model.id} className="mt-1" />
+                <div className="grid gap-1.5 w-full">
+                  <Label htmlFor={model.id} className="font-medium flex justify-between">
+                    <span>{model.name}</span>
+                    <span className="text-green-600 font-bold">${model.inputPrice}-${model.outputPrice}/百万token</span>
+                  </Label>
+                  <p className="text-sm text-muted-foreground">{model.description}</p>
+                </div>
               </div>
-              
-              <div className="flex items-center space-x-2 pb-2 pt-2">
-                <input 
-                  type="checkbox" 
-                  id="useDevAccount" 
-                  checked={useDevAccount} 
-                  onChange={(e) => setUseDevAccount(e.target.checked)}
-                  className="rounded border-gray-300 text-primary focus:ring-primary"
-                />
-                <Label htmlFor="useDevAccount" className="text-sm font-medium cursor-pointer">
-                  使用开发者账号（内测期间免费）
-                </Label>
-              </div>
-              
-              {!useDevAccount && (
-                <>
-                  <div className="space-y-2">
-                    <Label htmlFor="cardNumber">银行卡号</Label>
-                    <Input 
-                      id="cardNumber" 
-                      value={cardNumber} 
-                      onChange={(e) => setCardNumber(e.target.value)}
-                      placeholder="1234 5678 9012 3456"
-                    />
-                  </div>
-                  
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="expiry">有效期</Label>
-                      <Input 
-                        id="expiry" 
-                        value={expiry} 
-                        onChange={(e) => setExpiry(e.target.value)}
-                        placeholder="MM/YY"
-                      />
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="cvc">CVC</Label>
-                      <Input 
-                        id="cvc" 
-                        value={cvc} 
-                        onChange={(e) => setCvc(e.target.value)}
-                        placeholder="123"
-                      />
-                    </div>
-                  </div>
-                </>
-              )}
-            </div>
-            
-            <DialogFooter className="flex space-x-2">
-              <Button variant="outline" onClick={() => setStep(1)}>
-                返回
-              </Button>
-              <Button onClick={handlePaymentSubmit} disabled={!useDevAccount && (!cardNumber || !expiry || !cvc)}>
-                开始使用
-              </Button>
-            </DialogFooter>
-          </>
-        )}
+            ))}
+          </RadioGroup>
+        </div>
+        
+        <DialogFooter>
+          <Button onClick={handleModelSelect}>开始使用</Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
