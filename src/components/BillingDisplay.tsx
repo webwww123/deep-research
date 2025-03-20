@@ -8,7 +8,7 @@ type BillingDisplayProps = {
 };
 
 function BillingDisplay({ step, active = false }: BillingDisplayProps) {
-  const { tokenUsage, selectedModel } = useBillingStore();
+  const { tokenUsage } = useBillingStore();
   const usage = tokenUsage[step];
   const prevUsageRef = useRef({ input: 0, output: 0, cost: 0 });
   const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -51,7 +51,8 @@ function BillingDisplay({ step, active = false }: BillingDisplayProps) {
         }
       };
     }
-  }, [active, step]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [active, step, usage.cost]);
 
   // 格式化成本为美元
   const formatCost = (cost: number) => {

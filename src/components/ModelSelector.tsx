@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
 import { 
   Dialog, 
   DialogContent, 
@@ -12,8 +11,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { useGlobalStore } from "@/store/global";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 // 模型数据
@@ -61,7 +58,6 @@ type ModelSelectorProps = {
 };
 
 function ModelSelector({ open, onClose }: ModelSelectorProps) {
-  const { t } = useTranslation();
   const [selectedModel, setSelectedModel] = useState("claude37sonnet");
   const [username, setUsername] = useState("");
   const [cardNumber, setCardNumber] = useState("");
