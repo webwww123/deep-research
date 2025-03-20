@@ -30,6 +30,9 @@ function TotalBilling() {
     return tokens.toLocaleString();
   };
 
+  // 计算总token数量
+  const totalTokens = totalUsage.input + totalUsage.output;
+
   return (
     <div className="mt-8 border-t pt-4">
       <h3 className="text-lg font-medium mb-2">使用统计</h3>
@@ -46,13 +49,8 @@ function TotalBilling() {
         </div>
         
         <div className="flex justify-between mb-2">
-          <span className="text-sm text-muted-foreground">总输入Tokens:</span>
-          <span className="font-medium">{formatTokens(totalUsage.input)}</span>
-        </div>
-        
-        <div className="flex justify-between mb-2">
-          <span className="text-sm text-muted-foreground">总输出Tokens:</span>
-          <span className="font-medium">{formatTokens(totalUsage.output)}</span>
+          <span className="text-sm text-muted-foreground">总Token用量:</span>
+          <span className="font-medium">{formatTokens(totalTokens)}</span>
         </div>
         
         <div className="flex justify-between text-green-600 font-semibold border-t border-gray-200 dark:border-gray-700 pt-2 mt-2">

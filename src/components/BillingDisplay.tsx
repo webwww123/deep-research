@@ -63,19 +63,18 @@ function BillingDisplay({ step, active = false }: BillingDisplayProps) {
     return tokens.toLocaleString();
   };
 
-  if (usage.input === 0 && usage.output === 0 && !active) {
+  // 计算总token数量
+  const totalTokens = usage.input + usage.output;
+
+  if (totalTokens === 0 && !active) {
     return null;
   }
 
   return (
     <div className="flex items-center text-xs text-gray-500 mt-1 space-x-2">
       <span className="flex items-center">
-        <span className="mr-1">输入:</span>
-        <span className="font-mono">{formatTokens(usage.input)}</span>
-      </span>
-      <span className="flex items-center">
-        <span className="mr-1">输出:</span>
-        <span className="font-mono">{formatTokens(usage.output)}</span>
+        <span className="mr-1">Token用量:</span>
+        <span className="font-mono">{formatTokens(totalTokens)}</span>
       </span>
       <span className="flex items-center font-medium text-green-600">
         <span className="mr-1">费用:</span>
