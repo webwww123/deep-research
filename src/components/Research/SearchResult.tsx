@@ -29,6 +29,10 @@ const formSchema = z.object({
   suggestion: z.string(),
 });
 
+interface SearchResultProps {
+  setActiveStep: (step: string | null) => void;
+}
+
 function TaskState({ state }: { state: SearchTask["state"] }) {
   if (state === "completed") {
     return <CircleCheck className="h-5 w-5" />;
@@ -39,7 +43,7 @@ function TaskState({ state }: { state: SearchTask["state"] }) {
   }
 }
 
-function SearchResult() {
+function SearchResult({ setActiveStep }: SearchResultProps) {
   const { t } = useTranslation();
   const taskStore = useTaskStore();
   const { status, reviewSearchResult, writeFinalReport } = useDeepResearch();
@@ -59,21 +63,33 @@ function SearchResult() {
   });
 
   async function handleWriteFinalReport() {
+    // 开始计费 - 最终报告阶段
+    setActiveStep("finalReport");
+    
     setIsWriting(true);
     await writeFinalReport();
     setIsWriting(false);
+    
+    // 停止计费 - 最终报告阶段
+    setActiveStep(null);
   }
 
   async function handleSubmit(values: z.infer<typeof formSchema>) {
     const { setSuggestion } = useTaskStore.getState();
     setSuggestion(values.suggestion);
     try {
+      // 开始计费 - 搜索结果阶段
+      setActiveStep("searchResult");
+      
       accurateTimerStart();
       setIsThinking(true);
       await reviewSearchResult();
       // Clear previous research suggestions
       setSuggestion("");
       setIsThinking(false);
+      
+      // 停止计费 - 搜索结果阶段
+      setActiveStep(null);
     } finally {
       accurateTimerStop();
     }
@@ -81,9 +97,6 @@ function SearchResult() {
 
   return (
     <section className="p-4 border rounded-md mt-4">
-      <h3 className="font-semibold text-lg border-b mb-2 leading-10">
-        {t("research.searchResult.title")}
-      </h3>
       {taskStore.tasks.length === 0 ? (
         <div>{t("research.searchResult.emptyTip")}</div>
       ) : (
@@ -146,7 +159,7 @@ function SearchResult() {
                 )}
               />
               <div className="grid grid-cols-2 gap-4 max-sm:gap-2 w-full mt-4">
-                <Button type="submit" variant="secondary" disabled={isThinking}>
+                <Button type="submit" className="bg-secondary hover:bg-secondary/80" disabled={isThinking}>
                   {isThinking ? (
                     <>
                       <LoaderCircle className="animate-spin" />

@@ -8,16 +8,26 @@ import useDeepResearch from "@/hooks/useDeepResearch";
 import { useTaskStore } from "@/store/task";
 import { downloadFile } from "@/utils/file";
 
-function FinalReport() {
+interface FinalReportProps {
+  setActiveStep: (step: string | null) => void;
+}
+
+function FinalReport({ setActiveStep }: FinalReportProps) {
   const { t } = useTranslation();
   const taskStore = useTaskStore();
   const { status, writeFinalReport } = useDeepResearch();
   const [isWriting, setIsWriting] = useState<boolean>(false);
 
   async function handleWriteFinalReport() {
+    // 开始计费 - 最终报告阶段
+    setActiveStep("finalReport");
+    
     setIsWriting(true);
     await writeFinalReport();
     setIsWriting(false);
+    
+    // 停止计费 - 最终报告阶段
+    setActiveStep(null);
   }
 
   async function handleDownloadPDF() {
@@ -31,9 +41,6 @@ function FinalReport() {
 
   return (
     <section className="p-4 border rounded-md mt-4">
-      <h3 className="font-semibold text-lg border-b mb-2 leading-10">
-        {t("research.finalReport.title")}
-      </h3>
       {taskStore.finalReport === "" ? (
         <div>{t("research.finalReport.emptyTip")}</div>
       ) : (
@@ -46,7 +53,7 @@ function FinalReport() {
           </article>
           <div className="grid grid-cols-3 gap-4 max-sm:gap-2 w-full border-t mt-4 pt-4">
             <Button
-              variant="secondary"
+              className="border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground"
               disabled={isWriting}
               onClick={() => handleWriteFinalReport()}
             >

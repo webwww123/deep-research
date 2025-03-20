@@ -23,7 +23,11 @@ const formSchema = z.object({
   feedback: z.string(),
 });
 
-function Feedback() {
+interface FeedbackProps {
+  setActiveStep: (step: string | null) => void;
+}
+
+function Feedback({ setActiveStep }: FeedbackProps) {
   const { t } = useTranslation();
   const taskStore = useTaskStore();
   const { status, deepResearch } = useDeepResearch();
@@ -50,10 +54,16 @@ function Feedback() {
     ].join("\n\n");
     taskStore.setQuery(prompt);
     try {
+      // 开始计费 - 研究阶段
+      setActiveStep("research");
+      
       accurateTimerStart();
       setIsThinking(true);
       await deepResearch();
       setIsThinking(false);
+      
+      // 停止计费 - 研究阶段
+      setActiveStep(null);
     } finally {
       accurateTimerStop();
     }
@@ -61,9 +71,6 @@ function Feedback() {
 
   return (
     <section className="p-4 border rounded-md mt-4">
-      <h3 className="font-semibold text-lg border-b mb-2 leading-10">
-        {t("research.feedback.title")}
-      </h3>
       {taskStore.questions === "" ? (
         <div>{t("research.feedback.emptyTip")}</div>
       ) : (

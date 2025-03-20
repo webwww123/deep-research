@@ -23,7 +23,11 @@ const formSchema = z.object({
   topic: z.string().min(2),
 });
 
-function Topic() {
+interface TopicProps {
+  setActiveStep: (step: string | null) => void;
+}
+
+function Topic({ setActiveStep }: TopicProps) {
   const { t } = useTranslation();
   const { askQuestions } = useDeepResearch();
   const [isThinking, setIsThinking] = useState<boolean>(false);
@@ -39,10 +43,17 @@ function Topic() {
     const { apiKey, accessPassword } = useSettingStore.getState();
     if (apiKey || accessPassword) {
       const { setQuestion } = useTaskStore.getState();
+      
+      // 开始计费 - 思考阶段
+      setActiveStep("thinking");
       setIsThinking(true);
+      
       setQuestion(values.topic);
       await askQuestions();
+      
+      // 停止计费 - 思考阶段
       setIsThinking(false);
+      setActiveStep(null);
     } else {
       const { setOpenSetting } = useGlobalStore.getState();
       setOpenSetting(true);
@@ -51,9 +62,6 @@ function Topic() {
 
   return (
     <section className="p-4 border rounded-md mt-4">
-      <h3 className="font-semibold text-lg border-b mb-2 leading-10">
-        {t("research.topic.title")}
-      </h3>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)}>
           <FormField
