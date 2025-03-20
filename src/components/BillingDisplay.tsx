@@ -71,14 +71,14 @@ function BillingDisplay({ step, active = false }: BillingDisplayProps) {
   }
 
   return (
-    <div className="flex items-center text-xs text-gray-500 mt-1 space-x-2">
-      <span className="flex items-center">
-        <span className="mr-1">Token用量:</span>
-        <span className="font-mono">{formatTokens(totalTokens)}</span>
+    <div className="flex items-center text-sm font-medium mt-1 ml-2 space-x-3">
+      <span className="flex items-center bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded-md">
+        <span className="mr-1 text-black dark:text-white">Token用量:</span>
+        <span className="font-mono text-blue-600 dark:text-blue-400">{formatTokens(totalTokens)}</span>
       </span>
-      <span className="flex items-center font-medium text-green-600">
-        <span className="mr-1">费用:</span>
-        <span className="font-mono">{formatCost(usage.cost)}</span>
+      <span className="flex items-center bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded-md">
+        <span className="mr-1 text-black dark:text-white">费用:</span>
+        <span className="font-mono text-green-600 dark:text-green-400 font-bold">{formatCost(usage.cost)}</span>
       </span>
     </div>
   );

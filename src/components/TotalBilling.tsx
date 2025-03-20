@@ -35,27 +35,27 @@ function TotalBilling() {
 
   return (
     <div className="mt-8 border-t pt-4">
-      <h3 className="text-lg font-medium mb-2">使用统计</h3>
+      <h3 className="text-lg font-bold mb-3">会话使用统计</h3>
       
-      <div className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg">
-        <div className="flex justify-between mb-2">
-          <span className="text-sm text-muted-foreground">用户:</span>
+      <div className="bg-gray-50 dark:bg-gray-900 p-5 rounded-lg shadow-sm">
+        <div className="flex justify-between mb-3">
+          <span className="text-sm font-medium text-gray-600 dark:text-gray-400">用户:</span>
           <span className="font-medium">{username}</span>
         </div>
         
-        <div className="flex justify-between mb-2">
-          <span className="text-sm text-muted-foreground">模型:</span>
+        <div className="flex justify-between mb-3">
+          <span className="text-sm font-medium text-gray-600 dark:text-gray-400">模型:</span>
           <span className="font-medium">{getModelName(selectedModel)}</span>
         </div>
         
-        <div className="flex justify-between mb-2">
-          <span className="text-sm text-muted-foreground">总Token用量:</span>
-          <span className="font-medium">{formatTokens(totalTokens)}</span>
+        <div className="flex justify-between mb-4 p-2 bg-blue-50 dark:bg-blue-900/20 rounded-md">
+          <span className="text-sm font-medium text-blue-800 dark:text-blue-300">总Token用量:</span>
+          <span className="font-bold text-blue-700 dark:text-blue-300">{formatTokens(totalTokens)}</span>
         </div>
         
-        <div className="flex justify-between text-green-600 font-semibold border-t border-gray-200 dark:border-gray-700 pt-2 mt-2">
-          <span>总费用:</span>
-          <span>{formatCost(totalUsage.cost)}</span>
+        <div className="flex justify-between p-3 bg-green-50 dark:bg-green-900/20 rounded-md border-t border-green-100 dark:border-green-800">
+          <span className="font-bold text-green-800 dark:text-green-300">总费用:</span>
+          <span className="font-bold text-green-700 dark:text-green-300 text-lg">{formatCost(totalUsage.cost)}</span>
         </div>
       </div>
     </div>
