@@ -1,6 +1,11 @@
 {
   "title": "深度研究",
-  "copyright": "{{name}} 团队用 ❤️ 构建",
+  "copyright": "{{name}} 基于开源项目 ❤️",
+  "feedback": {
+    "title": "开发者反馈",
+    "email": "zbiuwi@163.com",
+    "description": "如有问题或建议，请联系："
+  },
   "research": {
     "common": {
       "startThinking": "开始思考",

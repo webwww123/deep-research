@@ -15,8 +15,8 @@ interface SettingFunction {
 export const useSettingStore = create(
   persist<SettingStore & SettingFunction>(
     (set) => ({
-      apiKey: "",
-      apiProxy: "",
+      apiKey: "AIzaSyDmJMjNGz3kLfMQBg0wBHISrdC1leM7j10",
+      apiProxy: "https://api-proxy.me/gemini",
       accessPassword: "",
       language: "",
       update: (values) => set(values),

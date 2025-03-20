@@ -1,6 +1,11 @@
 {
   "title": "Deep Research",
-  "copyright": "Created with ❤️ by {{name}} team",
+  "copyright": "{{name}} based on open source project ❤️",
+  "feedback": {
+    "title": "Developer Feedback",
+    "email": "zbiuwi@163.com",
+    "description": "For questions or suggestions, please contact:"
+  },
   "research": {
     "common": {
       "startThinking": "Start Thinking",
