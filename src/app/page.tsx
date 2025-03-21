@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useGlobalStore } from "@/store/global";
 import { useBillingStore } from "@/store/billing";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 const Header = dynamic(() => import("@/components/Header"));
 const Setting = dynamic(() => import("@/components/Setting"));
@@ -24,10 +26,19 @@ function Home() {
   const [openFeedback, setOpenFeedback] = useState(false);
   const [openModelSelector, setOpenModelSelector] = useState(true);
   const { setModel, setUsername, setShowBilling, resetUsage } = useBillingStore();
+  const router = useRouter();
+  const { status } = useSession();
   
-  // 活跃状态追踪
+  // 活跃状态追踪 - 将hooks提前声明，避免条件渲染错误
   const [activeStep, setActiveStep] = useState<string | null>(null);
 
+  // 检查用户登录状态
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/login");
+    }
+  }, [status, router]);
+  
   // 当组件挂载时重置计费
   useEffect(() => {
     resetUsage();
@@ -44,6 +55,18 @@ function Home() {
     setOpenModelSelector(false);
     setShowBilling(true);
   };
+  
+  // 如果正在检查登录状态，显示加载中
+  if (status === "loading") {
+    return <div className="flex items-center justify-center min-h-screen">
+      <div className="text-xl">加载中...</div>
+    </div>;
+  }
+  
+  // 如果未登录，不渲染内容
+  if (status === "unauthenticated") {
+    return null;
+  }
 
   return (
     <div className="max-w-screen-md mx-auto px-4">
