@@ -45,7 +45,15 @@ export async function POST(req: NextRequest) {
       body: JSON.stringify(body),
     });
     
-    return new NextResponse(response.body, response);
+    return new NextResponse(response.body, {
+      status: response.status,
+      headers: {
+        'Content-Type': response.headers.get("Content-Type") || "application/json",
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, x-goog-api-client, x-goog-api-key',
+      }
+    });
   } catch (error) {
     if (error instanceof Error) {
       console.error(error);

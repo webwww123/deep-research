@@ -13,9 +13,7 @@ export function useGoogleProvider() {
   return createGoogleGenerativeAI(
     apiKey
       ? {
-          baseURL: `${
-            apiProxy || DEFAULT_API_PROXY
-          }/v1beta`,
+          baseURL: "/api/ai/google/v1beta",
           apiKey,
         }
       : {
