@@ -3,6 +3,7 @@ import Script from "next/script";
 import ThemeProvider from "@/components/Theme/Provider";
 import I18Provider from "@/components/I18nProvider";
 import { Toaster } from "@/components/ui/sonner";
+import { AuthProvider } from "@/components/AuthProvider";
 
 import "./globals.css";
 
@@ -45,7 +46,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <I18Provider>{children}</I18Provider>
+          <I18Provider>
+            <AuthProvider>{children}</AuthProvider>
+          </I18Provider>
         </ThemeProvider>
         <Toaster richColors toastOptions={{ duration: 2000 }} />
       </body>
