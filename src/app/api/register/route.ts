@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
-import { Prisma } from "@prisma/client";
 
 export async function POST(req: Request) {
   try {
@@ -24,14 +23,12 @@ export async function POST(req: Request) {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const userData: Prisma.UserCreateInput = {
-      email,
-      name,
-      password: hashedPassword,
-    };
-
     const user = await prisma.user.create({
-      data: userData,
+      data: {
+        email,
+        name,
+        password: hashedPassword,
+      },
     });
 
     // 不要在响应中返回密码
