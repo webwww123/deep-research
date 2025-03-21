@@ -35,6 +35,7 @@ export async function POST(req: Request) {
     });
 
     // 不要在响应中返回密码
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password: _, ...userWithoutPassword } = user;
     return NextResponse.json(userWithoutPassword);
   } catch (error) {
